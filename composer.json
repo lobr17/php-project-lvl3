@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "hexlet/code",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -20,7 +20,8 @@
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^4.3",
-        "phpunit/phpunit": "^8.5.8|^9.3.3"
+        "phpunit/phpunit": "^8.5.8|^9.3.3",
+	"squizlabs/php_codesniffer": "dev-master"
     },
     "config": {
         "optimize-autoloader": true,
@@ -58,6 +59,7 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+	"phpcs": "phpcs"
     }
 }
