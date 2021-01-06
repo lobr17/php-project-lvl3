@@ -93,7 +93,15 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+		</div>
+
+    <form name="test" method="post" action="input1.php">
+        <p><b>Введите сайт:</b><br>
+           <input type="text" size="40">
+        </p>
+        <p><input type="submit" value="Отправить"></p>
+    </form>
+
             </div>
         </div>
     </body>
