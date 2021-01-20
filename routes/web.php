@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 	return view('welcome');
-})->name('domains.index');
+})->name('domains.root');
 
 
 Route::post('/', function (Request $request) {
@@ -29,7 +29,7 @@ Route::post('/', function (Request $request) {
 	     'created_at' => date("Y:m:d, g:i")]
 	);
         return view('welcome');      
-})->name('domains.create');
+})->name('domains.store');
 
 
 Route::get('/domains', function () {
@@ -37,7 +37,7 @@ Route::get('/domains', function () {
 		->select('id', 'name')
 		->get();
         return view('domains/domains', ['domains' => $domains]);
-})->name('domains.store'); 
+})->name('domains.index'); 
 
 
 Route::get('/domains/{id}', function ($id) {	
