@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-//use Illuminate\Http\Response;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -18,25 +18,36 @@ use Illuminate\Support\Facades\DB;
 
 
 Route::get('/', function () {
-	return view('domains');
+	return view('welcome');
 	
 });
 	//->name('index');
 
-
 Route::post('/', function (Request $request) {
-
-	$domainData = $request->input('domain[name]');
-
-
+	$domainData = $request->input('domain.name');	
 	DB::table('domains')->insertGetId(
 	    ['name' => $domainData,
-             'updated_at' => '12:12:12',
-             'created_at' => '11:11:11']
-        );
-
-	return redirect('/')->with('status', 'INSERTED');
-       // return view('/', ['domains' => $domains]);
-	//return view('/', []);      
+	     'updated_at' => date("Y:m:d, g:i"),
+	     'created_at' => date("Y:m:d, g:i")]
+	);
+        return view('welcome');      
 });
 //})->name('domains.store');
+
+Route::get('/domains', function () {
+	$domains = DB::table('domains')
+		->select('id', 'name')
+		->get();
+	//var_dump($domains);
+        return view('domains/domains', ['domains' => $domains]);
+}); 
+
+Route::get('/domains/{id}', function ($id) {	
+        $domain = DB::table('domains')
+		->select('id', 'name')
+		->where('id', $id)
+                ->get();
+        //var_dump($domains);
+        return view('domains/show', ['domain' => $domain] );
+});
+

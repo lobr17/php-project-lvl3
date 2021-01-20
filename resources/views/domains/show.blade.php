@@ -10,12 +10,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
     </head>
     <body>
-	   <form method="post" action="/">
-                {{ csrf_field() }}
-                <p><b>Введите сайт:</b>
-                   <input type="text" name="domain[name]" size="40"> 
-                   <input type="submit" value="Отправить">
-               </p>
-	   </form>
+	 <p>DOMAIN {{$domain}} </p>
+         {{var_dump($domain)}}
+         <?php $data = (json_decode($domain, true)) ?>
+         {{var_dump($data[0])}}
+         
+	 
+          
+       
+           	     
     </body>
 </html>

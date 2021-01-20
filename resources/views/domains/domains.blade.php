@@ -10,13 +10,15 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
     </head>
     <body>
-	   <form method="post" action="/">
-                {{ csrf_field() }}
-                <p><b>Введите сайт:</b>
-                   <input type="text" name="domain[name]" size="40"> 
-                   <input type="submit" value="Отправить">
-               </p>
-	   </form>
-           <a href="/domains">Все сайты</a>
+	 <p>DOMAINS</p>
+	 <ul>
+               
+	     @foreach ($domains ?? '' as $domain)
+		 <li><a href="domains/{{$domain->id}}">{{$domain->name}}</a>
+                      {{var_dump($domain)}} 
+                 </li>
+                     
+             @endforeach
+         </ul>           	     
     </body>
 </html>
