@@ -16,12 +16,10 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-
 Route::get('/', function () {
 	return view('welcome');
-	
-});
-	//->name('index');
+})->name('domains.index');
+
 
 Route::post('/', function (Request $request) {
 	$domainData = $request->input('domain.name');	
@@ -31,23 +29,22 @@ Route::post('/', function (Request $request) {
 	     'created_at' => date("Y:m:d, g:i")]
 	);
         return view('welcome');      
-});
-//})->name('domains.store');
+})->name('domains.create');
+
 
 Route::get('/domains', function () {
 	$domains = DB::table('domains')
 		->select('id', 'name')
 		->get();
-	//var_dump($domains);
         return view('domains/domains', ['domains' => $domains]);
-}); 
+})->name('domains.store'); 
+
 
 Route::get('/domains/{id}', function ($id) {	
         $domain = DB::table('domains')
 		->select('id', 'name')
 		->where('id', $id)
                 ->get();
-        //var_dump($domains);
         return view('domains/show', ['domain' => $domain] );
-});
+})->name('domains.show');
 
