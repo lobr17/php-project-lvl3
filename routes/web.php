@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,17 +19,33 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 	return view('welcome');
-})->name('domains.root');
+})->name('/');
 
 
 Route::post('/', function (Request $request) {
-	$domainData = $request->input('domain.name');	
+	$domainData = $request->input('domain.name');
+
+	$validator = Validator::make($request->all(),[
+            'name' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/')
+                        ->withErrors($validator)
+                        ->withInput();
+	} 
+
 	DB::table('domains')->insertGetId(
 	    ['name' => $domainData,
 	     'updated_at' => date("Y:m:d, g:i"),
 	     'created_at' => date("Y:m:d, g:i")]
-	);
-        return view('welcome');      
+        );
+	$idObj =  DB::table('domains')
+		->select('id')
+		->where('name', '=', $domainData)
+		->get();
+	$id = (json_decode($idObj, true)[0]['id']);
+        return redirect()->route('domains.show', ['id' => $id]);      
 })->name('domains.store');
 
 
