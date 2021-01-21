@@ -23,18 +23,16 @@ Route::get('/', function () {
 
 
 Route::post('/', function (Request $request) {
-	$domainData = $request->input('domain.name');
+	//$domainData = $request->input('domain.name');       
 
-	$validator = Validator::make($request->all(),[
-            'name' => 'required'
-        ]);
+        $input = $request->all();
+	var_dump($input);
 
-        if ($validator->fails()) {
-            return redirect('/')
-                        ->withErrors($validator)
-                        ->withInput();
-	} 
-
+	$request->validate([
+		    'domain.name' => 'required'
+		]);
+	//var_dump($validator);
+        $domainData = $request->input('domain.name');
 	DB::table('domains')->insertGetId(
 	    ['name' => $domainData,
 	     'updated_at' => date("Y:m:d, g:i"),
