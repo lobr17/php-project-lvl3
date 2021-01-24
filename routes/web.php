@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,22 +27,33 @@ Route::post('/', function (Request $request) {
         $input = $request->all();
 	$request->validate([
 		'domain.name' => 'required|max:255|url'
-		]);
+	]);
+
 
 	$domainData = $request->input('domain.name');
+	$domainHost = parse_url($domainData, PHP_URL_HOST);
+	$domainScheme = parse_url($domainData, PHP_URL_SCHEME);
+	$domainScheme === "http" ? $schemeId = 1 : $schemeId = 2;
 
-	DB::table('domains')->insertGetId(
-	    ['name' => $domainData,
-	     'updated_at' => date("Y:m:d, g:i"),
-	     'created_at' => date("Y:m:d, g:i")]
-        );
 
-	$idObj =  DB::table('domains')
-		->select('id')
-		->where('name', '=', $domainData)
-		->get();
-	$id = (json_decode($idObj, true)[0]['id']);
-	return redirect()->route('domains.show', ['id' => $id]);      
+	$checkDublication = DB::table('domains')->where('name',$domainHost)->first();       
+	if (!$checkDublication) {
+		DB::table('domains')->insertGetId(
+		    ['name' => $domainHost,
+		     'scheme_id' => $schemeId, 
+		     'updated_at' => Carbon::now(),
+		     'created_at' => Carbon::now()]
+		);
+
+		$idObj =  DB::table('domains')
+			->select('id')
+			->where('name', '=', $domainHost)
+			->get();
+		$id = (json_decode($idObj, true)[0]['id']);
+		return redirect()->route('domains.show', ['id' => $id]);
+	}	      
+
+	return view('/');
 })->name('domains.store');
 
 
